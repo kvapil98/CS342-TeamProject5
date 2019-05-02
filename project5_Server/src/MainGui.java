@@ -19,6 +19,7 @@ public class MainGui extends Application{
 	Game game = new Game();
 	BorderPane pane = new BorderPane();
 	int playersPlayed = 0; //need to change to implement random challenging
+	boolean randomHit = false;
 	
 	
 	private Parent createContent(Stage primaryStage) {
@@ -107,7 +108,7 @@ public class MainGui extends Application{
 					String[] tokens = data.toString().split(",");
 					int playerNum = Integer.parseInt(tokens[2]) - 1;
 					int cardNum = Integer.parseInt(tokens[1]);
-					game.players.get(playerNum).hand.get(cardNum).played = true;
+					game.players.get(playerNum).playedCard = true;
 					game.players.get(playerNum).played = game.players.get(playerNum).hand.get(cardNum);
 					playersPlayed++; //change when randomizer
 				}
@@ -118,18 +119,39 @@ public class MainGui extends Application{
 					int challengee = game.challenger2;
 					
 					conn.sendAll("challenge, player " + challenger + " is playing against " + challengee);
-					game.challenger1 = 0;
-					game.challenger2 = 0;
+					randomHit = true;
+					//game.challenger1 = 0;
+					//game.challenger2 = 0;
 				}
 				
+				if(randomHit) {
+					System.out.println(game.players.size());
+					System.out.println(game.challenger1-1 + " +++++");
+					System.out.println(game.challenger2-1 + " #######");
+					if(game.players.get(game.challenger1-1).playedCard && game.players.get(game.challenger2-1).playedCard) {
+						Card challengerCard = game.players.get(game.challenger1 - 1).played;
+						Card challengeeCard = game.players.get(game.challenger2 - 1).played;
+						int winner = game.compare(challengerCard, challengeeCard);
+						if(winner == 1) {
+							winner = game.challenger1;
+						}else {
+							winner = game.challenger2;
+						}
+						
+						conn.sendAll("round,The winner is player " + winner);
+						game.challenger1 = 0;
+						game.challenger2 = 0;
+						randomHit = false;
+					}
+				}
 				
 				//temp for testing
-				if(playersPlayed == 2) {
-					
-					int winner = game.compare(game.players.get(0).played, game.players.get(1).played);
-					conn.sendAll("round,The winner is player " + winner);
-					playersPlayed = 0;
-				}
+//				if(playersPlayed == 2) {
+//					
+//					int winner = game.compare(game.players.get(0).played, game.players.get(1).played);
+//					conn.sendAll("round,The winner is player " + winner);
+//					playersPlayed = 0;
+//				}
 				
 				
 			});

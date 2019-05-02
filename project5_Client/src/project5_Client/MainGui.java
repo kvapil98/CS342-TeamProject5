@@ -7,6 +7,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -162,6 +164,12 @@ public class MainGui extends Application{
 					   case 0:
 						   card1.setText(name);
 						   card1.setUserData(name);
+						   String path= fucntion(name);
+						   Image img = new Image(path);
+						   ImageView heroImg = new ImageView(img);
+						   heroImg.setFitWidth(300);
+						   heroImg.setFitHeight(200);
+						   card1.setGraphic(heroImg);
 						   cardSet++;
 						   break; 
 					   

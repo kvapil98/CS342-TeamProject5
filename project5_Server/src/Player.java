@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class Player {
 	ArrayList<Card> hand = new ArrayList<Card>();
 	Card played;
+	boolean playedCard = false;
 	int threadNum;
 	
 	Player(int num){

@@ -1,9 +1,23 @@
 enum SuperHero{
-	Superman,
-	Batman,
-	Spiderman,
-	Hulk,
-	Thor
+	IronMan, Thor, Vision, Hulk, Superman,
+	
+    Batman, Spiderman, Venom, Loki, Ultron,
+
+    GreenLantern, CaptainAmerica, LexLuthor, Magneto, Joker,
+
+    Flash, Wolverine, BlackPanther, Aquaman, Antman,
+
+    Thanos, Doomsday, CaptainMarvel, Deadpool, ScareCrow,
+
+    Darkseid, Bane, Catwoman, BlackWidow, WonderWoman,
+
+    Carnage, Saitaman, Vegeta, Goku, Naruto,
+
+    Jiren, Beerus, Whis, Rorschach, Shazam,
+
+    DrManhattan, Storm, ProfessorX, MartianManhunter, Gamora,
+
+    Raven, Michealangelo, Leonardo, Raphael, Donatello ;
 }
 
 enum Rank{
@@ -25,16 +39,24 @@ enum Rank{
 public class Card {
 	SuperHero hero;
 	private Rank rank;
-	int attack;
-	int defense;
+//	int attack;
+//	int defense;
 	String name;
 	boolean played = false;
 	//image will be a function on client side
+	int attack;
+	int defense;
+	int special;
+	
 	
 	Card(){};
 	
-	Card(SuperHero hero){
+	Card(SuperHero hero, int attack, int defense, int special){
 		this.hero = hero;
+		this.attack = attack;
+		this.defense = defense;
+		this.special = special;
+		this.name = hero.toString();
 	}
 	
 	public void setRank(Rank rank){

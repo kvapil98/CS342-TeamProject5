@@ -12,9 +12,12 @@ public class Dealer extends Card{
 	
 	public void createDeck(){
 		for(SuperHero hero : SuperHero.values()) {
-				Card tempCard = new Card(hero);
-				tempCard.setValueOfCard(hero);
-				Deck.add(tempCard);
+			int attack = (int)(Math.random() * ((100 - 50) + 1)) + 50;
+			int defense = (int)(Math.random() * ((100 - 50) + 1)) + 50;
+			int special = (int)(Math.random() * ((100 - 50) + 1)) + 50;
+			Card tempCard = new Card(hero, attack, defense, special);	
+				//tempCard.setValueOfCard(hero);
+			Deck.add(tempCard);
 		}
 	}
 	
