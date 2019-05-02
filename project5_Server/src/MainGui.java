@@ -77,8 +77,11 @@ public class MainGui extends Application{
 							conn.send(msg,playerNum);
 							player.addCard(gameDealer.Deck.get(i));
 						}
+						for(int i = 0; i<5; i++) {
+							gameDealer.Deck.remove(0);
+						}
 						game.addPlayer(player);
-						gameDealer.shuffle();
+						//gameDealer.shuffle();
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -110,7 +113,7 @@ public class MainGui extends Application{
 					int cardNum = Integer.parseInt(tokens[1]);
 					game.players.get(playerNum).playedCard = true;
 					game.players.get(playerNum).played = game.players.get(playerNum).hand.get(cardNum);
-					playersPlayed++; //change when randomizer
+					//playersPlayed++; //change when randomizer
 				}
 				
 				if(data.toString().startsWith("random")) {

@@ -21,6 +21,7 @@ public class Game {
 	
 	public void randomize() {
 		int numRange = players.size() + 1;
+		challenger1 = new Random().nextInt(numRange);
 		while(challenger1 == 0) {
 			challenger1 = new Random().nextInt(numRange);
 		}

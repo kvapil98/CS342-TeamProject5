@@ -164,12 +164,13 @@ public class MainGui extends Application{
 					   case 0:
 						   card1.setText(name);
 						   card1.setUserData(name);
-						   String path= fucntion(name);
-						   Image img = new Image(path);
-						   ImageView heroImg = new ImageView(img);
-						   heroImg.setFitWidth(300);
-						   heroImg.setFitHeight(200);
-						   card1.setGraphic(heroImg);
+						   //String path= getPath();
+//						   String path= "images/ironMan.png";
+//						   Image img = new Image(path);
+//						   ImageView heroImg = new ImageView(img);
+//						   heroImg.setFitWidth(200);
+//						   heroImg.setFitHeight(150);
+//						   card1.setGraphic(heroImg);
 						   cardSet++;
 						   break; 
 					   
@@ -239,5 +240,15 @@ public class MainGui extends Application{
 				
 			});
 		});
+	}
+	
+	public String getPath() {
+		//String hero = name.intern();
+//		if(hero == "IronMan") {
+//			return "Images/IronMan.jpg";
+//		}else {
+//			return null;
+//		}
+		return "Images/IronMan.jpg";
 	}
 }
