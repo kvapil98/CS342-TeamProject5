@@ -159,17 +159,17 @@ public class MainGui extends Application{
 				if(data.toString().startsWith("n")) {
 					String[] tokens = data.toString().split(",");
 					String name = tokens[1];
+					System.out.println(name);
 					
 					switch(cardSet){
 					   case 0:
 						   card1.setText(name);
 						   card1.setUserData(name);
-						   //String path= getPath();
-//						   String path= "images/ironMan.png";
+//						   String path= getPath(name);
 //						   Image img = new Image(path);
 //						   ImageView heroImg = new ImageView(img);
 //						   heroImg.setFitWidth(200);
-//						   heroImg.setFitHeight(150);
+//						   heroImg.setFitHeight(130);
 //						   card1.setGraphic(heroImg);
 						   cardSet++;
 						   break; 
@@ -177,24 +177,48 @@ public class MainGui extends Application{
 					   case 1:
 						   card2.setText(name);
 						   card2.setUserData(name);
+//						   String path0= getPath(name);
+//						   Image img0 = new Image(path0);
+//						   ImageView heroImg0 = new ImageView(img0);
+//						   heroImg0.setFitWidth(200);
+//						   heroImg0.setFitHeight(130);
+//						   card1.setGraphic(heroImg0);
 						   cardSet++;
 						   break;
 					    
 					   case 2:
 						   card3.setText(name);
 						   card3.setUserData(name);
+//						   String path1 = getPath(name);
+//						   Image img1 = new Image(path1);
+//						   ImageView heroImg1 = new ImageView(img1);
+//						   heroImg1.setFitWidth(200);
+//						   heroImg1.setFitHeight(130);
+//						   card1.setGraphic(heroImg1);
 						   cardSet++;
 						   break; 
 						      
 					   case 3:
 						   card4.setText(name);
 						   card4.setUserData(name);
+//						   String path2= getPath(name);
+//						   Image img2 = new Image(path2);
+//						   ImageView heroImg2 = new ImageView(img2);
+//						   heroImg2.setFitWidth(200);
+//						   heroImg2.setFitHeight(130);
+//						   card1.setGraphic(heroImg2);
 						   cardSet++;
 						   break;
 						      
 					   case 4:
 						   card5.setText(name);
 						   card5.setUserData(name);
+//						   String path3= getPath(name);
+//						   Image img3 = new Image(path3);
+//						   ImageView heroImg3 = new ImageView(img3);
+//						   heroImg3.setFitWidth(200);
+//						   heroImg3.setFitHeight(130);
+//						   card1.setGraphic(heroImg3);
 						   cardSet = 0;
 						   break;
 					   
@@ -242,13 +266,12 @@ public class MainGui extends Application{
 		});
 	}
 	
-	public String getPath() {
-		//String hero = name.intern();
-//		if(hero == "IronMan") {
-//			return "Images/IronMan.jpg";
-//		}else {
-//			return null;
-//		}
-		return "Images/IronMan.jpg";
+	public String getPath(String name) {
+		String hero = name.intern();
+		if(hero == "IronMan") {
+			return "images/ironMan.jpg";
+		}else {
+			return null;
+		}
 	}
 }
