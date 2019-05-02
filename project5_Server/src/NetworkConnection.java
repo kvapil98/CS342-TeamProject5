@@ -124,7 +124,6 @@ public abstract class NetworkConnection {
 				
 				while(true) {
 					String data =  in.readObject().toString();
-					
 					//this.read = data;
 					//check = true;
 		

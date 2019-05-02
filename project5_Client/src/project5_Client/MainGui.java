@@ -159,11 +159,16 @@ public class MainGui extends Application{
 				if(data.toString().startsWith("n")) {
 					String[] tokens = data.toString().split(",");
 					String name = tokens[1];
-					System.out.println(name);
+					String attack = tokens[2];
+					String defense = tokens[3];
+					String special = tokens[4];
+					String setText = name + "\nAttack: " + attack + "\nDefense: " + defense + "\nSpecial: " + special;
+					//String setData = name + "," + attack + "," + defense + "," + special;
+					//System.out.println(name);
 					
 					switch(cardSet){
 					   case 0:
-						   card1.setText(name);
+						   card1.setText(setText);
 						   card1.setUserData(name);
 //						   String path= getPath(name);
 //						   Image img = new Image(path);
@@ -175,7 +180,7 @@ public class MainGui extends Application{
 						   break; 
 					   
 					   case 1:
-						   card2.setText(name);
+						   card2.setText(setText);
 						   card2.setUserData(name);
 //						   String path0= getPath(name);
 //						   Image img0 = new Image(path0);
@@ -187,7 +192,7 @@ public class MainGui extends Application{
 						   break;
 					    
 					   case 2:
-						   card3.setText(name);
+						   card3.setText(setText);
 						   card3.setUserData(name);
 //						   String path1 = getPath(name);
 //						   Image img1 = new Image(path1);
@@ -199,7 +204,7 @@ public class MainGui extends Application{
 						   break; 
 						      
 					   case 3:
-						   card4.setText(name);
+						   card4.setText(setText);
 						   card4.setUserData(name);
 //						   String path2= getPath(name);
 //						   Image img2 = new Image(path2);
@@ -211,7 +216,7 @@ public class MainGui extends Application{
 						   break;
 						      
 					   case 4:
-						   card5.setText(name);
+						   card5.setText(setText);
 						   card5.setUserData(name);
 //						   String path3= getPath(name);
 //						   Image img3 = new Image(path3);

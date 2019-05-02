@@ -71,9 +71,15 @@ public class MainGui extends Application{
 				if(data.toString().startsWith("cards")) {
 					try {
 						Player player = new Player(conn.numPlayers - 1);
+						int playerNum = conn.numPlayers - 1;
+						int attack;
+						int defense;
+						int special;
 						for(int i = 0; i<5; i++) {
-							int playerNum = conn.numPlayers - 1;
-							String msg = "n," + gameDealer.Deck.get(i).name;
+							attack = gameDealer.Deck.get(i).attack;
+							defense = gameDealer.Deck.get(i).defense;
+							special = gameDealer.Deck.get(i).special;
+							String msg = "n," + gameDealer.Deck.get(i).name + "," + attack + "," + defense + "," + special;
 							conn.send(msg,playerNum);
 							player.addCard(gameDealer.Deck.get(i));
 						}
@@ -128,9 +134,6 @@ public class MainGui extends Application{
 				}
 				
 				if(randomHit) {
-					System.out.println(game.players.size());
-					System.out.println(game.challenger1-1 + " +++++");
-					System.out.println(game.challenger2-1 + " #######");
 					if(game.players.get(game.challenger1-1).playedCard && game.players.get(game.challenger2-1).playedCard) {
 						Card challengerCard = game.players.get(game.challenger1 - 1).played;
 						Card challengeeCard = game.players.get(game.challenger2 - 1).played;
@@ -147,14 +150,6 @@ public class MainGui extends Application{
 						randomHit = false;
 					}
 				}
-				
-				//temp for testing
-//				if(playersPlayed == 2) {
-//					
-//					int winner = game.compare(game.players.get(0).played, game.players.get(1).played);
-//					conn.sendAll("round,The winner is player " + winner);
-//					playersPlayed = 0;
-//				}
 				
 				
 			});
