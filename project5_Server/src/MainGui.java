@@ -16,7 +16,9 @@ public class MainGui extends Application{
 	private NetworkConnection  conn = createServer();
 	private TextArea messages = new TextArea();
 	Dealer gameDealer = new Dealer();
+	Game game = new Game();
 	BorderPane pane = new BorderPane();
+	int playersPlayed = 0; //need to change to implement random challenging
 	
 	
 	private Parent createContent(Stage primaryStage) {
@@ -67,11 +69,14 @@ public class MainGui extends Application{
 				
 				if(data.toString().startsWith("cards")) {
 					try {
+						Player player = new Player(conn.numPlayers - 1);
 						for(int i = 0; i<5; i++) {
 							int playerNum = conn.numPlayers - 1;
 							String msg = "n," + gameDealer.Deck.get(i).name;
 							conn.send(msg,playerNum);
+							player.addCard(gameDealer.Deck.get(i));
 						}
+						game.addPlayer(player);
 						gameDealer.shuffle();
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
@@ -96,6 +101,34 @@ public class MainGui extends Application{
 					String msg = "Player " + tokens[2] + " played " + tokens[1] + "\n";
 					messages.appendText(msg);
 					conn.sendAll(msg);
+				}
+				
+				if(data.toString().startsWith("cardNum")) {
+					String[] tokens = data.toString().split(",");
+					int playerNum = Integer.parseInt(tokens[2]) - 1;
+					int cardNum = Integer.parseInt(tokens[1]);
+					game.players.get(playerNum).hand.get(cardNum).played = true;
+					game.players.get(playerNum).played = game.players.get(playerNum).hand.get(cardNum);
+					playersPlayed++; //change when randomizer
+				}
+				
+				if(data.toString().startsWith("random")) {
+					game.randomize();
+					int challenger = game.challenger1;
+					int challengee = game.challenger2;
+					
+					conn.sendAll("challenge, player " + challenger + " is playing against " + challengee);
+					game.challenger1 = 0;
+					game.challenger2 = 0;
+				}
+				
+				
+				//temp for testing
+				if(playersPlayed == 2) {
+					
+					int winner = game.compare(game.players.get(0).played, game.players.get(1).played);
+					conn.sendAll("round,The winner is player " + winner);
+					playersPlayed = 0;
 				}
 				
 				

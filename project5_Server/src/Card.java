@@ -28,6 +28,7 @@ public class Card {
 	int attack;
 	int defense;
 	String name;
+	boolean played = false;
 	//image will be a function on client side
 	
 	Card(){};

@@ -18,13 +18,15 @@ public class MainGui extends Application{
 	private NetworkConnection  conn =createClient();
 	int cardSet = 0;
 	HBox cards;
-	Button  card1, card2, card3, card4, card5;
+	Button  card1, card2, card3, card4, card5, start;
 	//Button card1 = new Button("card1");
 	BorderPane pane = new BorderPane();
 	Text playerNum = new Text();
 	Text played1 = new Text();
 	Text played2 = new Text();
-	boolean setPlayed = true;
+	boolean setPlayed = true; //bounce between texts
+	Text roundWinner = new Text();
+	Text challenge = new Text();
 	
 	private Parent createContent( Stage primaryStage) {
 		card1 = new Button("card1");
@@ -32,6 +34,7 @@ public class MainGui extends Application{
 		card3 = new Button("card3");
 		card4 = new Button("card4");
 		card5 = new Button("card5");
+		start = new Button("Start Random");
 		
 		card1.setOnAction(e->{
 			card1.setDisable(true);
@@ -39,6 +42,7 @@ public class MainGui extends Application{
 			String msg = "played," + hero + "," + conn.clientNumber;
 			try {
 				conn.send(msg);
+				conn.send("cardNum,0,"+ conn.clientNumber);
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				System.out.println("Did not send card");
@@ -51,6 +55,7 @@ public class MainGui extends Application{
 			String msg = "played," + hero + "," + conn.clientNumber;
 			try {
 				conn.send(msg);
+				conn.send("cardNum,1,"+ conn.clientNumber);
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				System.out.println("Did not send card");
@@ -63,6 +68,7 @@ public class MainGui extends Application{
 			String msg = "played," + hero + "," + conn.clientNumber;
 			try {
 				conn.send(msg);
+				conn.send("cardNum,2,"+ conn.clientNumber);
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				System.out.println("Did not send card");
@@ -75,6 +81,7 @@ public class MainGui extends Application{
 			String msg = "played," + hero + "," + conn.clientNumber;
 			try {
 				conn.send(msg);
+				conn.send("cardNum,3,"+ conn.clientNumber);
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				System.out.println("Did not send card");
@@ -87,13 +94,21 @@ public class MainGui extends Application{
 			String msg = "played," + hero + "," + conn.clientNumber;
 			try {
 				conn.send(msg);
+				conn.send("cardNum,4,"+ conn.clientNumber);
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				System.out.println("Did not send card");
 			}
 		});
 		
-		
+		start.setOnAction(e->{
+			try {
+				conn.send("random");
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				System.out.println("Did not send random");
+			}
+		});
 		
 		
 		cards = new HBox(card1, card2, card3, card4, card5);
@@ -101,7 +116,7 @@ public class MainGui extends Application{
 		root.setPrefSize(600, 600);
 		pane.setCenter(root);
 		cards.setAlignment(Pos.CENTER);
-		VBox temp = new VBox(10, playerNum, played1, played2);
+		VBox temp = new VBox(10, playerNum, challenge, played1, played2, roundWinner,start);
 		pane.setTop(temp);
 		pane.setBottom(cards);
 		return root;	
@@ -196,7 +211,16 @@ public class MainGui extends Application{
 						setPlayed = true;
 					}
 				}
-					
+				
+				if(data.toString().startsWith("round")) {
+					String[] tokens = data.toString().split(",");
+					roundWinner.setText(tokens[1]);
+				}
+				
+				if(data.toString().startsWith("challenge")) {
+					String[] tokens = data.toString().split(",");
+					challenge.setText(tokens[1]);
+				}
 
 				
 				if(data.toString().startsWith("p")){
