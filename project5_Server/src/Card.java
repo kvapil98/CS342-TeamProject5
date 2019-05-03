@@ -1,7 +1,13 @@
 enum SuperHero{
-	IronMan, Thor, Vision, Hulk, Superman,
+	AgentVenom, IronMan, Thor, Vision, Hulk, Superman,
+
+	BlackAdam, Brainiac, Deathstroke, DrDoom, Galactus,
+
+	LaughingBatman, MarquisOfDeath, RedHood, RedHulk,
+
+	RedSon, ReverseFlash, SilverSurfer, Ultraman, 
 	
-    Batman, Spiderman, Venom, Loki, Ultron,
+    Batman, Spiderman, Venom, Loki, Ultron, WhiteLantern,
 
     GreenLantern, CaptainAmerica, LexLuthor, Magneto, Joker,
 
@@ -11,13 +17,11 @@ enum SuperHero{
 
     Darkseid, Bane, Catwoman, BlackWidow, WonderWoman,
 
-    Carnage, Saitaman, Vegeta, Goku, Naruto,
+    Carnage, Saitama, Vegeta, Goku, Shazam,
 
-    Jiren, Beerus, Whis, Rorschach, Shazam,
+    DrManhattan, Storm, ProfessorX, MartianManhunter,
 
-    DrManhattan, Storm, ProfessorX, MartianManhunter, Gamora,
-
-    Raven, Michealangelo, Leonardo, Raphael, Donatello ;
+    Raven, Michealangelo, Leonardo, Raphael, Donatello;
 }
 
 enum Rank{
