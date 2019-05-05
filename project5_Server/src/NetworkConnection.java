@@ -53,6 +53,20 @@ public abstract class NetworkConnection {
 		}
 	}
 	
+	public void sendToOthers(int one, int two, Serializable data) {
+		int sendOne = one - 1;
+		int sendTwo = two - 1;
+		
+		try {
+			for(int i =0; i<numPlayers; i++) {
+				if(i!=sendOne && i!=sendTwo) {
+					players.get(i).out.writeObject(data);
+				}
+			}
+		}catch(Exception e) { 
+			System.out.println("Did not send to others");
+		}
+	}
 	
 	
 	public void closeConn() throws Exception{

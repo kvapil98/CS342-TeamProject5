@@ -29,28 +29,40 @@ public class MainGui extends Application{
 	boolean setPlayed = true; //bounce between texts
 	Text roundWinner = new Text();
 	Text challenge = new Text();
+	int cardOne, cardTwo, cardThree, cardFour, cardFive;
+	Image player1Img, player2Img;
+	ImageView player1Played, player2Played;
 	
 	private Parent createContent( Stage primaryStage) {
 		card1 = new Button("card1");
-		   //String path3= getPath("images/ironMan.jpg");
-//		   Image img3 = new Image("images/ironMan.jpg");
-//		   ImageView heroImg3 = new ImageView(img3);
-//		   heroImg3.setFitWidth(200);
-//		   heroImg3.setFitHeight(130);
-//		   card1.setGraphic(heroImg3);
 		card2 = new Button("card2");
 		card3 = new Button("card3");
 		card4 = new Button("card4");
 		card5 = new Button("card5");
 		start = new Button("Start Random");
 		
+		player1Img = new Image("images/ironMan.jpg");
+		player1Played = new ImageView(player1Img);
+		player1Played.setFitWidth(200);
+		player1Played.setFitHeight(130);
+		player1Played.setVisible(false);
+		
+		player2Img = new Image("images/ironMan.jpg");
+		player2Played = new ImageView(player1Img);
+		player2Played.setFitWidth(200);
+		player2Played.setFitHeight(130);
+		player2Played.setVisible(false);
+		
 		card1.setOnAction(e->{
 			card1.setDisable(true);
 			String hero = (String) card1.getUserData();
 			String msg = "played," + hero + "," + conn.clientNumber;
+			disableCards();
+			cardOne++;
 			try {
-				conn.send(msg);
+				//conn.send(msg);
 				conn.send("cardNum,0,"+ conn.clientNumber);
+				conn.send(msg);
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				System.out.println("Did not send card");
@@ -61,9 +73,12 @@ public class MainGui extends Application{
 			card2.setDisable(true);
 			String hero = (String) card2.getUserData();
 			String msg = "played," + hero + "," + conn.clientNumber;
+			disableCards();
+			cardTwo++;
 			try {
-				conn.send(msg);
+				//conn.send(msg);
 				conn.send("cardNum,1,"+ conn.clientNumber);
+				conn.send(msg);
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				System.out.println("Did not send card");
@@ -74,9 +89,11 @@ public class MainGui extends Application{
 			card3.setDisable(true);
 			String hero = (String) card3.getUserData();
 			String msg = "played," + hero + "," + conn.clientNumber;
+			disableCards();
+			cardThree++;
 			try {
-				conn.send(msg);
 				conn.send("cardNum,2,"+ conn.clientNumber);
+				conn.send(msg);
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				System.out.println("Did not send card");
@@ -87,9 +104,12 @@ public class MainGui extends Application{
 			card4.setDisable(true);
 			String hero = (String) card4.getUserData();
 			String msg = "played," + hero + "," + conn.clientNumber;
+			disableCards();
+			cardFour++;
 			try {
-				conn.send(msg);
+				//conn.send(msg);
 				conn.send("cardNum,3,"+ conn.clientNumber);
+				conn.send(msg);
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				System.out.println("Did not send card");
@@ -100,9 +120,12 @@ public class MainGui extends Application{
 			card5.setDisable(true);
 			String hero = (String) card5.getUserData();
 			String msg = "played," + hero + "," + conn.clientNumber;
+			disableCards();
+			cardFive++;
 			try {
-				conn.send(msg);
+				//conn.send(msg);
 				conn.send("cardNum,4,"+ conn.clientNumber);
+				conn.send(msg);
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				System.out.println("Did not send card");
@@ -124,7 +147,7 @@ public class MainGui extends Application{
 		root.setPrefSize(600, 600);
 		pane.setCenter(root);
 		cards.setAlignment(Pos.CENTER);
-		VBox temp = new VBox(10, playerNum, challenge, played1, played2, roundWinner,start);
+		VBox temp = new VBox(10, playerNum, challenge, played1, player1Played, played2, player2Played, roundWinner,start);
 		pane.setTop(temp);
 		pane.setBottom(cards);
 		return root;	
@@ -247,11 +270,23 @@ public class MainGui extends Application{
 				
 				
 				if(data.toString().startsWith("Player")) {
+					String[] tokens = data.toString().split(",");
+					String pathImg = getPath(tokens[1]);
+					String msg = tokens[0] + "\n Attack: " + tokens[2] + " Defense: " + tokens[3] + " Special: " + tokens[4];
+					
 					if(setPlayed) {
-						played1.setText(data.toString());
+						played1.setText(msg);
+						player1Img = new Image(pathImg);
+						player1Played.setImage(player1Img);
+						player1Played.setVisible(true);
+						
 						setPlayed = false;
 					}else {
-						played2.setText(data.toString());
+						played2.setText(msg);
+						
+						player2Img = new Image(pathImg);
+						player2Played.setImage(player2Img);
+						player2Played.setVisible(true);
 						setPlayed = true;
 					}
 				}
@@ -259,13 +294,45 @@ public class MainGui extends Application{
 				if(data.toString().startsWith("round")) {
 					String[] tokens = data.toString().split(",");
 					roundWinner.setText(tokens[1]);
+					start.setDisable(false);
 				}
 				
 				if(data.toString().startsWith("challenge")) {
 					String[] tokens = data.toString().split(",");
 					challenge.setText(tokens[1]);
+					player1Played.setVisible(false);
+					player2Played.setVisible(false);
+					played1.setText("");
+					played2.setText("");
+					if(cardOne == 0) {
+						card1.setDisable(false);
+					}
+					if(cardTwo == 0) {
+						card2.setDisable(false);
+					}
+					if(cardThree == 0) {
+						card3.setDisable(false);
+					}
+					if(cardFour == 0) {
+						card4.setDisable(false);
+					}
+					if(cardFive == 0) {
+						card5.setDisable(false);
+					}
 				}
 
+				
+				if(data.toString().startsWith("disableRestart")) {
+					start.setDisable(true);
+				}
+				
+				if(data.toString().startsWith("disableCards")) {
+					card1.setDisable(true);
+					card2.setDisable(true);
+					card3.setDisable(true);
+					card4.setDisable(true);
+					card5.setDisable(true);
+				}
 				
 				if(data.toString().startsWith("p")){
 					//System.out.println(data.toString().intern());
@@ -459,5 +526,12 @@ public class MainGui extends Application{
 		else {
 			return null;
 		}
+	}
+	public void disableCards() {
+		card1.setDisable(true);
+		card2.setDisable(true);
+		card3.setDisable(true);
+		card4.setDisable(true);
+		card5.setDisable(true);
 	}
 }

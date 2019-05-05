@@ -108,7 +108,11 @@ public class MainGui extends Application{
 				
 				if(data.toString().startsWith("played")) {
 					String[] tokens = data.toString().split(",");
-					String msg = "Player " + tokens[2] + " played " + tokens[1] + "\n";
+					int index = Integer.parseInt(tokens[2]) - 1;
+					int attack = game.players.get(index).played.attack;
+					int defense = game.players.get(index).played.defense;
+					int special = game.players.get(index).played.special;
+					String msg = "Player " + tokens[2] + " played " + tokens[1] + "\n," + tokens[1] + "," + attack + "," + defense +"," + special;
 					messages.appendText(msg);
 					conn.sendAll(msg);
 				}
@@ -119,6 +123,7 @@ public class MainGui extends Application{
 					int cardNum = Integer.parseInt(tokens[1]);
 					game.players.get(playerNum).playedCard = true;
 					game.players.get(playerNum).played = game.players.get(playerNum).hand.get(cardNum);
+					
 					//playersPlayed++; //change when randomizer
 				}
 				
@@ -129,6 +134,8 @@ public class MainGui extends Application{
 					
 					conn.sendAll("challenge, player " + challenger + " is playing against " + challengee);
 					randomHit = true;
+					conn.sendToOthers(challenger, challengee, "disableCards");
+					conn.sendAll("disableRestart");
 					//game.challenger1 = 0;
 					//game.challenger2 = 0;
 				}
