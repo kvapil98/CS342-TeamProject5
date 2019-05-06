@@ -5,6 +5,7 @@ public class Player {
 	Card played;
 	boolean playedCard = false;
 	int threadNum;
+	int points;
 	
 	Player(int num){
 		this.threadNum = num;

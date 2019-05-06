@@ -18,7 +18,6 @@ public class MainGui extends Application{
 	Dealer gameDealer = new Dealer();
 	Game game = new Game();
 	BorderPane pane = new BorderPane();
-	int playersPlayed = 0; //need to change to implement random challenging
 	boolean randomHit = false;
 	
 	
@@ -95,6 +94,29 @@ public class MainGui extends Application{
 					//playersInPlay++;
 				}
 				
+				if(data.toString().startsWith("newCards")) {
+					String[] tokens = data.toString().split(",");
+					int client = Integer.parseInt(tokens[1]) - 1;
+					int attack;
+					int defense;
+					int special;
+					for(int i = 0; i<5; i++) {
+						attack = gameDealer.Deck.get(i).attack;
+						defense = gameDealer.Deck.get(i).defense;
+						special = gameDealer.Deck.get(i).special;
+						String msg = "n," + gameDealer.Deck.get(i).name + "," + attack + "," + defense + "," + special;
+						try {
+							conn.send(msg,client);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					for(int i = 0; i<5; i++) {
+						gameDealer.Deck.remove(0);
+					}
+				}
+				
 				if(data.toString().startsWith("new player")) {
 					int playerNum = conn.numPlayers - 1;
 					//String playerNumber = Integer.toString(playerNum);
@@ -132,7 +154,7 @@ public class MainGui extends Application{
 					int challenger = game.challenger1;
 					int challengee = game.challenger2;
 					
-					conn.sendAll("challenge, player " + challenger + " is playing against " + challengee);
+					conn.sendAll("challenge, Defender: Player " + challenger + "   Attacker: Player " + challengee);
 					randomHit = true;
 					conn.sendToOthers(challenger, challengee, "disableCards");
 					conn.sendAll("disableRestart");
@@ -142,19 +164,39 @@ public class MainGui extends Application{
 				
 				if(randomHit) {
 					if(game.players.get(game.challenger1-1).playedCard && game.players.get(game.challenger2-1).playedCard) {
+						int gamePoints = 0;
+						boolean isWinner = false;
 						Card challengerCard = game.players.get(game.challenger1 - 1).played;
 						Card challengeeCard = game.players.get(game.challenger2 - 1).played;
+						game.players.get(game.challenger1-1).playedCard = false;
+						game.players.get(game.challenger2-1).playedCard = false;
 						int winner = game.compare(challengerCard, challengeeCard);
 						if(winner == 1) {
 							winner = game.challenger1;
+							game.players.get(game.challenger1-1).points++;
+							gamePoints = game.players.get(game.challenger1-1).points;
+							if(gamePoints == 3) {
+								//send to all the winner
+								conn.sendAll("round,Player " + winner + " has won the game!!");
+								isWinner = true;
+							}
 						}else {
 							winner = game.challenger2;
+							game.players.get(game.challenger2-1).points++;
+							gamePoints = game.players.get(game.challenger2-1).points;
+							if(gamePoints == 3) {
+								//send to all the winner
+								conn.sendAll("round,Player " + winner + " has won the game!!");
+								isWinner = true;
+							}
 						}
 						
-						conn.sendAll("round,The winner is player " + winner);
-						game.challenger1 = 0;
-						game.challenger2 = 0;
-						randomHit = false;
+						if(!isWinner) {
+							conn.sendAll("round,Player " + winner + " has won the battle\nPlayer " + winner + " now has " + gamePoints + " battle points" );
+							game.challenger1 = 0;
+							game.challenger2 = 0;
+							randomHit = false;
+						}
 					}
 				}
 				
