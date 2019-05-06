@@ -11,11 +11,16 @@ public class Game {
 		this.players.add(p);
 	}
 	
-	public int compare(Card play1, Card play2) {
-		if(play1.attack > play2.attack) {
-			return 1;
-		}else {
+	public int compare(Card defender, Card attacker) {
+		
+		if(attacker.attack > defender.defense) {
 			return 2;
+		}else if(defender.attack > attacker.defense) {
+			return 1;
+		}else if(attacker.special > defender.special) {
+			return 2;
+		}else {
+			return 1;
 		}
 	}
 	
@@ -29,5 +34,10 @@ public class Game {
 		while(challenger1 == challenger2 || challenger2 == 0) {
 			challenger2 = new Random().nextInt(numRange);
 		}
+	}
+	
+	public void reset() {
+		challenger1 = 0;
+		challenger2 = 0;
 	}
 }

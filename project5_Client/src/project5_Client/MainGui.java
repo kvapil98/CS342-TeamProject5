@@ -32,6 +32,7 @@ public class MainGui extends Application{
 	int cardOne, cardTwo, cardThree, cardFour, cardFive;
 	Image player1Img, player2Img;
 	ImageView player1Played, player2Played;
+	int cardsHit = 0;
 	
 	private Parent createContent( Stage primaryStage) {
 		card1 = new Button("card1");
@@ -41,12 +42,14 @@ public class MainGui extends Application{
 		card5 = new Button("card5");
 		start = new Button("Start Random");
 		
+		//temp images
 		player1Img = new Image("images/ironMan.jpg");
 		player1Played = new ImageView(player1Img);
 		player1Played.setFitWidth(200);
 		player1Played.setFitHeight(130);
 		player1Played.setVisible(false);
 		
+		//temp images
 		player2Img = new Image("images/ironMan.jpg");
 		player2Played = new ImageView(player1Img);
 		player2Played.setFitWidth(200);
@@ -59,8 +62,13 @@ public class MainGui extends Application{
 			String msg = "played," + hero + "," + conn.clientNumber;
 			disableCards();
 			cardOne++;
+			cardsHit++;
 			try {
 				//conn.send(msg);
+				if(cardsHit == 5) {
+					cardsHit = 0;
+					conn.send("newCards," + conn.clientNumber);
+				}
 				conn.send("cardNum,0,"+ conn.clientNumber);
 				conn.send(msg);
 			} catch (Exception e1) {
@@ -75,8 +83,13 @@ public class MainGui extends Application{
 			String msg = "played," + hero + "," + conn.clientNumber;
 			disableCards();
 			cardTwo++;
+			cardsHit++;
 			try {
 				//conn.send(msg);
+				if(cardsHit == 5) {
+					cardsHit = 0;
+					conn.send("newCards," + conn.clientNumber);
+				}
 				conn.send("cardNum,1,"+ conn.clientNumber);
 				conn.send(msg);
 			} catch (Exception e1) {
@@ -91,7 +104,12 @@ public class MainGui extends Application{
 			String msg = "played," + hero + "," + conn.clientNumber;
 			disableCards();
 			cardThree++;
+			cardsHit++;
 			try {
+				if(cardsHit == 5) {
+					cardsHit = 0;
+					conn.send("newCards," + conn.clientNumber);
+				}
 				conn.send("cardNum,2,"+ conn.clientNumber);
 				conn.send(msg);
 			} catch (Exception e1) {
@@ -106,8 +124,13 @@ public class MainGui extends Application{
 			String msg = "played," + hero + "," + conn.clientNumber;
 			disableCards();
 			cardFour++;
+			cardsHit++;
 			try {
 				//conn.send(msg);
+				if(cardsHit == 5) {
+					cardsHit = 0;
+					conn.send("newCards," + conn.clientNumber);
+				}
 				conn.send("cardNum,3,"+ conn.clientNumber);
 				conn.send(msg);
 			} catch (Exception e1) {
@@ -122,8 +145,13 @@ public class MainGui extends Application{
 			String msg = "played," + hero + "," + conn.clientNumber;
 			disableCards();
 			cardFive++;
+			cardsHit++;
 			try {
 				//conn.send(msg);
+				if(cardsHit == 5) {
+					cardsHit = 0;
+					conn.send("newCards," + conn.clientNumber);
+				}
 				conn.send("cardNum,4,"+ conn.clientNumber);
 				conn.send(msg);
 			} catch (Exception e1) {
@@ -205,6 +233,7 @@ public class MainGui extends Application{
 						   heroImg.setFitWidth(200);
 						   heroImg.setFitHeight(130);
 						   card1.setGraphic(heroImg);
+						   card1.setDisable(true);
 						   cardSet++;
 						   break; 
 					   
@@ -217,6 +246,7 @@ public class MainGui extends Application{
 						   heroImg0.setFitWidth(200);
 						   heroImg0.setFitHeight(130);
 						   card2.setGraphic(heroImg0);
+						   card2.setDisable(true);
 						   cardSet++;
 						   break;
 					    
@@ -229,6 +259,7 @@ public class MainGui extends Application{
 						   heroImg1.setFitWidth(200);
 						   heroImg1.setFitHeight(130);
 						   card3.setGraphic(heroImg1);
+						   card3.setDisable(true);
 						   cardSet++;
 						   break; 
 						      
@@ -241,6 +272,7 @@ public class MainGui extends Application{
 						   heroImg2.setFitWidth(200);
 						   heroImg2.setFitHeight(130);
 						   card4.setGraphic(heroImg2);
+						   card4.setDisable(true);
 						   cardSet++;
 						   break;
 						      
@@ -253,6 +285,7 @@ public class MainGui extends Application{
 						   heroImg3.setFitWidth(200);
 						   heroImg3.setFitHeight(130);
 						   card5.setGraphic(heroImg3);
+						   card5.setDisable(true);
 						   cardSet = 0;
 						   break;
 					   
@@ -272,7 +305,7 @@ public class MainGui extends Application{
 				if(data.toString().startsWith("Player")) {
 					String[] tokens = data.toString().split(",");
 					String pathImg = getPath(tokens[1]);
-					String msg = tokens[0] + "\n Attack: " + tokens[2] + " Defense: " + tokens[3] + " Special: " + tokens[4];
+					String msg = tokens[0] + "Attack: " + tokens[2] + " Defense: " + tokens[3] + " Special: " + tokens[4];
 					
 					if(setPlayed) {
 						played1.setText(msg);
@@ -294,6 +327,7 @@ public class MainGui extends Application{
 				if(data.toString().startsWith("round")) {
 					String[] tokens = data.toString().split(",");
 					roundWinner.setText(tokens[1]);
+					roundWinner.setVisible(true);
 					start.setDisable(false);
 				}
 				
@@ -302,6 +336,7 @@ public class MainGui extends Application{
 					challenge.setText(tokens[1]);
 					player1Played.setVisible(false);
 					player2Played.setVisible(false);
+					roundWinner.setVisible(false);
 					played1.setText("");
 					played2.setText("");
 					if(cardOne == 0) {
@@ -404,7 +439,7 @@ public class MainGui extends Application{
 			return "images/ultraman.jpg";
 		}
 		else if(hero == "Batman"){
-			return "images/batman.jpg";
+			return "images/batman.png";
 		}
 		else if(hero == "Spiderman"){
 			return "images/spiderman.jpg";
@@ -422,7 +457,7 @@ public class MainGui extends Application{
 			return "images/whitelantern.jpg";
 		}
 		else if(hero == "GreenLantern"){
-			return "images/greenlantern.jpg";
+			return "images/greenlatern.jpg";
 		}
 		else if(hero == "CaptainAmerica"){
 			return "images/captainamerica.jpg";
