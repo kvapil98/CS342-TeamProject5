@@ -20,7 +20,7 @@ public class MainGui extends Application{
 	private NetworkConnection  conn =createClient();
 	int cardSet = 0;
 	HBox cards;
-	Button  card1, card2, card3, card4, card5, start;
+	Button  card1, card2, card3, card4, card5, start, newGame;
 	//Button card1 = new Button("card1");
 	BorderPane pane = new BorderPane();
 	Text playerNum = new Text();
@@ -41,6 +41,8 @@ public class MainGui extends Application{
 		card4 = new Button("card4");
 		card5 = new Button("card5");
 		start = new Button("Start Random");
+		newGame = new Button("New Game");
+		newGame.setVisible(false);
 		
 		//temp images
 		player1Img = new Image("images/ironMan.jpg");
@@ -169,13 +171,25 @@ public class MainGui extends Application{
 			}
 		});
 		
+		newGame.setOnAction(e->{
+			try {
+				start.setDisable(false);
+				conn.send("New Game");
+				//conn.send("newCards," + conn.clientNumber);
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				System.out.println("Did not send new game");
+			}
+			
+		});
+		
 		
 		cards = new HBox(card1, card2, card3, card4, card5);
 		VBox root = new VBox(10, cards);
 		root.setPrefSize(600, 600);
 		pane.setCenter(root);
 		cards.setAlignment(Pos.CENTER);
-		VBox temp = new VBox(10, playerNum, challenge, played1, player1Played, played2, player2Played, roundWinner,start);
+		VBox temp = new VBox(10, playerNum, challenge, played1, player1Played, played2, player2Played, roundWinner,start, newGame);
 		pane.setTop(temp);
 		pane.setBottom(cards);
 		return root;	
@@ -220,6 +234,11 @@ public class MainGui extends Application{
 					String defense = tokens[3];
 					String special = tokens[4];
 					String setText = name + "\nAttack: " + attack + "\nDefense: " + defense + "\nSpecial: " + special;
+//					start.setDisable(false);
+//					player1Played.setVisible(false);
+//					player2Played.setVisible(false);
+//					roundWinner.setVisible(false);
+//					newGame.setVisible(false);
 					//String setData = name + "," + attack + "," + defense + "," + special;
 					//System.out.println(name);
 					
@@ -354,6 +373,14 @@ public class MainGui extends Application{
 					if(cardFive == 0) {
 						card5.setDisable(false);
 					}
+					
+					if((cardOne != 0) && (cardTwo != 0) && (cardThree != 0) && (cardFour != 0) && (cardFive != 0)) {
+						cardOne = 0;
+						cardTwo = 0;
+						cardThree = 0;
+						cardFour = 0;
+						cardFive = 0;
+					}
 				}
 
 				
@@ -369,11 +396,29 @@ public class MainGui extends Application{
 					card5.setDisable(true);
 				}
 				
-				if(data.toString().startsWith("p")){
-					//System.out.println(data.toString().intern());
+				if(data.toString().startsWith("winner")){
 					String[] tokens = data.toString().split(",");
+					roundWinner.setText(tokens[1]);
+					roundWinner.setVisible(true);
+					newGame.setVisible(true);
+					start.setDisable(true);
 				}
 				
+				if(data.toString().startsWith("reset")) {
+					newGame.setVisible(false);
+					start.setDisable(false);
+					roundWinner.setVisible(false);
+					player1Played.setVisible(false);
+					player2Played.setVisible(false);
+					challenge.setText("");
+					played1.setText("");
+					played2.setText("");
+					cardOne = 0;
+					cardTwo = 0;
+					cardThree = 0;
+					cardFour = 0;
+					cardFive = 0;
+				}
 				
 			});
 		});

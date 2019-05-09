@@ -162,6 +162,35 @@ public class MainGui extends Application{
 					//game.challenger2 = 0;
 				}
 				
+				if(data.toString().startsWith("New Game")) {
+					gameDealer.newDeck();
+					gameDealer.shuffle();
+					
+					for(int i=0; i< game.players.size(); i++) {
+						int attack;
+						int defense;
+						int special;
+						game.players.get(i).points = 0;
+						
+						for(int j = 0; j<5; j++) {
+							attack = gameDealer.Deck.get(j).attack;
+							defense = gameDealer.Deck.get(j).defense;
+							special = gameDealer.Deck.get(j).special;
+							String msg = "n," + gameDealer.Deck.get(j).name + "," + attack + "," + defense + "," + special;
+							try {
+								conn.send(msg,i);
+								conn.send("reset", i);
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+						for(int k = 0; k<5; k++) {
+							gameDealer.Deck.remove(0);
+						}
+					}
+				}
+				
 				if(randomHit) {
 					if(game.players.get(game.challenger1-1).playedCard && game.players.get(game.challenger2-1).playedCard) {
 						int gamePoints = 0;
@@ -177,7 +206,7 @@ public class MainGui extends Application{
 							gamePoints = game.players.get(game.challenger1-1).points;
 							if(gamePoints == 3) {
 								//send to all the winner
-								conn.sendAll("round,Player " + winner + " has won the game!!");
+								conn.sendAll("winner,Player " + winner + " has won the War!!");
 								isWinner = true;
 							}
 						}else {
@@ -186,7 +215,7 @@ public class MainGui extends Application{
 							gamePoints = game.players.get(game.challenger2-1).points;
 							if(gamePoints == 3) {
 								//send to all the winner
-								conn.sendAll("round,Player " + winner + " has won the game!!");
+								conn.sendAll("winner,Player " + winner + " has won the War!!");
 								isWinner = true;
 							}
 						}
